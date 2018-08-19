@@ -1,15 +1,15 @@
 {
-	"name": "lsp-sample-server",
-	"description": "Example implementation of a language server in node.",
+	"name": "isml-linter-server",
+	"description": "Implementation of Isml language server in node.",
 	"version": "1.0.0",
-	"author": "Microsoft Corporation",
+	"author": "Fabiow Quixadá",
 	"license": "MIT",
 	"engines": {
 		"node": "*"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/Microsoft/vscode-extension-samples"
+		"url": "https://github.com/FabiowQuixada/vscode-isml-linter"
 	},
 	"dependencies": {
 		"vscode-languageserver": "^4.1.3"

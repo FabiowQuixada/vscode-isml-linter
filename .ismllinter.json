@@ -1,0 +1,15 @@
+{
+    "enabledRules": {
+        "BrTagRule": {},
+        "DwOccurrenceRule": {},
+        "GitConflictRule": {},
+        "ImportPackageRule": {},
+        "IsprintTagRule": {},
+        "LogicInTemplateRule": {},
+        "SpaceAtEndOfLineRule": {},
+        "SpacesOnlyLineRule": {},
+        "StyleAttributeRule": {},
+        "TabRule": {},
+        "prototy": {}
+    }
+}

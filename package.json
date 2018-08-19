@@ -50,5 +50,7 @@
 		"postinstall": "cd client && npm install && cd ../server && npm install && cd .."
 	},
 	"devDependencies": {},
-	"dependencies": {}
+	"dependencies": {
+		"isml-linter": "^2.0.0"
+	}
 }

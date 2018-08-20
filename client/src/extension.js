@@ -13,6 +13,10 @@ let client;
 Object.defineProperty(exports, "__esModule", { value: true });
 
 function activate(context) {
+
+    // TODO: This is not the best way, but that's the way the isml-linter package will understand
+    // it's running in a production environment. Will work on a better solution soon;
+    process.env.NODE_ENV = 'prod';
     
     const serverModule = context.asAbsolutePath(path.join('server', 'src', 'server.js'));
     const debugOptions = { execArgv: ['--nolazy', '--inspect=6009'] };

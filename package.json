@@ -5,6 +5,7 @@
 	"author": "Fabiow Quixadá",
 	"license": "MIT",
 	"version": "1.0.0",
+	"icon": "images/logo.png",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/FabiowQuixada/vscode-isml-linter"

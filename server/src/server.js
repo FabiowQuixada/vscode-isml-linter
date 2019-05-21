@@ -78,7 +78,7 @@ function validateTextDocument(textDocument) {
         if (!textDocument.uri.endsWith('.isml')) {
             return;
         }
-        
+
         const path        = unescape(textDocument.uri.substring('file://'.length));
         const result      = IsmlLinter.parse(path, textDocument.getText());
         const diagnostics = [];
@@ -100,6 +100,20 @@ function validateTextDocument(textDocument) {
                     diagnostics.push(diagnosic);
                 });
             }
+        }
+
+        if (result.INVALID_TEMPLATE) {
+            const occurrence = result.INVALID_TEMPLATE[0]
+            const diagnosic = {
+                severity : vscodeLanguageServer.DiagnosticSeverity.Error,
+                range    : {
+                    start : textDocument.positionAt(occurrence.globalPos),
+                    end   : textDocument.positionAt(occurrence.globalPos + occurrence.length)
+                },
+                message  : occurrence.message
+            };
+
+            diagnostics.push(diagnosic);
         }
 
         connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });

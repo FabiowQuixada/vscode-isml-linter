@@ -16,7 +16,7 @@ Currently, the linter is still in a Beta version, thus the config file in the de
 The default configuration file path is displayed below, be it Windows or Unix system.
 
 
-- (user_directory)/.vscode/extensions/fabiowquixada.vscode-isml-linter-(version)/.ismllinter.json
+- (user_directory)/.vscode/extensions/fabiowquixada.vscode-isml-linter-(version)/ismllinter.config.js
 
 Edit that file in order to customize the linter. By default, all rules are enabled. You can find more info on how to add or remove rules [here](https://www.npmjs.com/package/isml-linter).
 

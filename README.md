@@ -1,8 +1,9 @@
 # Isml Linter Extension for VS Code
 VS Code extension for Isml Linter. You can also install the linter directly through npm and take advantage of its full-project lint feature, such as use it in the build process. More info here: https://www.npmjs.com/package/isml-linter. There you can also find a set of rules that can be applied to this extension.
 
-# Known Issue
-As this is extension is in a Beta version, there are some known issues. It has an incompability with [Prophet Debugger](https://marketplace.visualstudio.com/items?itemName=SqrTT.prophet) extension and we're working to solve this problem as higher priority. If you want to see what this linter can do, temporarily disable Prophet and reload VS Code.
+# Phophet Compability
+This extension is aimed for non-[Prophet](https://marketplace.visualstudio.com/items?itemName=SqrTT.prophet) users, as there is a compability issue with it. We will soon
+create a PR to Prophet so it uses directly the Isml Linter npm package exactly the same way this extension does. Keep an eye on us!
 
 # Sample Result
 ![Isml Linter sample use](./images/sample_use.png "Isml Linter Sample Use")

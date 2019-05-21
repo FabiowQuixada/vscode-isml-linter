@@ -34,6 +34,6 @@
 	},
 	"devDependencies": {},
 	"dependencies": {
-		"isml-linter": "^4.0.0"
+		"isml-linter": "^5.5.0"
 	}
 }

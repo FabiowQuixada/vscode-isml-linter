@@ -79,22 +79,22 @@ function validateTextDocument(textDocument) {
             return;
         }
         
-        const text = textDocument.getText();
-        const result = IsmlLinter.FileParser.parse(text);
+        const path        = unescape(textDocument.uri.substring('file://'.length));
+        const result      = IsmlLinter.parse(path, textDocument.getText());
         const diagnostics = [];
 
         if (result.errors) {
             for (const brokenRule in result.errors) { 
 
-                result.errors[brokenRule].forEach( function(occurrence) {
+                result.errors[brokenRule][path].forEach( function(occurrence) {
 
                     const diagnosic = {
-                        severity: vscodeLanguageServer.DiagnosticSeverity.Error,
-                        range: {
-                            start: textDocument.positionAt(occurrence.columnStart),
-                            end: textDocument.positionAt(occurrence.columnStart + occurrence.length)
+                        severity : vscodeLanguageServer.DiagnosticSeverity.Error,
+                        range    : {
+                            start : textDocument.positionAt(occurrence.globalPos),
+                            end   : textDocument.positionAt(occurrence.globalPos + occurrence.length)
                         },
-                        message: brokenRule
+                        message  : brokenRule
                     };
 
                     diagnostics.push(diagnosic);

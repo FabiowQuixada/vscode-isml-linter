@@ -102,7 +102,7 @@ function validateTextDocument(textDocument) {
             }
         }
 
-        if (result.INVALID_TEMPLATE) {
+        if (result.INVALID_TEMPLATE.length) {
             const occurrence = result.INVALID_TEMPLATE[0]
             const diagnostic = {
                 severity : vscodeLanguageServer.DiagnosticSeverity.Error,

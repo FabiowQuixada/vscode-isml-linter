@@ -80,38 +80,56 @@ function validateTextDocument(textDocument) {
             return;
         }
 
-        const path        = URI.default.parse(textDocument.uri).fsPath;
-        const result      = IsmlLinter.parse(path, textDocument.getText());
         const diagnostics = [];
 
-        if (result.errors) {
-            for (const brokenRule in result.errors) { 
+        try {
+            const path   = URI.default.parse(textDocument.uri).fsPath;
+            const result = IsmlLinter.parse(path, textDocument.getText());
 
-                result.errors[brokenRule][path].forEach( function(occurrence) {
+            if (result.errors) {
+                for (const brokenRule in result.errors) {
 
-                    const diagnostic = {
-                        severity : vscodeLanguageServer.DiagnosticSeverity.Error,
-                        range    : {
-                            start : textDocument.positionAt(occurrence.globalPos),
-                            end   : textDocument.positionAt(occurrence.globalPos + occurrence.length)
-                        },
-                        message  : brokenRule
-                    };
+                    result.errors[brokenRule][path].forEach( function(occurrence) {
 
-                    diagnostics.push(diagnostic);
-                });
+                        const diagnostic = {
+                            severity : vscodeLanguageServer.DiagnosticSeverity.Error,
+                            range    : {
+                                start : textDocument.positionAt(occurrence.globalPos),
+                                end   : textDocument.positionAt(occurrence.globalPos + occurrence.length)
+                            },
+                            message  : brokenRule
+                        };
+
+                        diagnostics.push(diagnostic);
+                    });
+                }
             }
-        }
 
-        if (result.INVALID_TEMPLATE.length) {
-            const occurrence = result.INVALID_TEMPLATE[0]
+            if (result.INVALID_TEMPLATE.length) {
+                const occurrence = result.INVALID_TEMPLATE[0]
+                const diagnostic = {
+                    severity : vscodeLanguageServer.DiagnosticSeverity.Error,
+                    range    : {
+                        start : textDocument.positionAt(occurrence.globalPos),
+                        end   : textDocument.positionAt(occurrence.globalPos + occurrence.length)
+                    },
+                    message  : occurrence.message
+                };
+
+                diagnostics.push(diagnostic);
+            }
+
+        } catch (error) {
+            // TODO Log error in a better way and stop throwing the error to the user;
+            console.log(error);
+
             const diagnostic = {
                 severity : vscodeLanguageServer.DiagnosticSeverity.Error,
                 range    : {
-                    start : textDocument.positionAt(occurrence.globalPos),
-                    end   : textDocument.positionAt(occurrence.globalPos + occurrence.length)
+                    start : textDocument.positionAt(0),
+                    end   : textDocument.positionAt(1)
                 },
-                message  : occurrence.message
+                message  : error.stack
             };
 
             diagnostics.push(diagnostic);

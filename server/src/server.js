@@ -7,6 +7,7 @@
 
 const IsmlLinter = require('isml-linter');
 const vscodeLanguageServer = require("vscode-languageserver");
+const URI = require('vscode-uri');
 
 const connection = vscodeLanguageServer.createConnection(vscodeLanguageServer.ProposedFeatures.all);
 const documents = new vscodeLanguageServer.TextDocuments();
@@ -79,7 +80,7 @@ function validateTextDocument(textDocument) {
             return;
         }
 
-        const path        = unescape(textDocument.uri.substring('file://'.length));
+        const path        = URI.default.parse(textDocument.uri).fsPath;
         const result      = IsmlLinter.parse(path, textDocument.getText());
         const diagnostics = [];
 

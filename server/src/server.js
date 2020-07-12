@@ -88,7 +88,7 @@ function validateTextDocument(textDocument) {
 
                 result.errors[brokenRule][path].forEach( function(occurrence) {
 
-                    const diagnosic = {
+                    const diagnostic = {
                         severity : vscodeLanguageServer.DiagnosticSeverity.Error,
                         range    : {
                             start : textDocument.positionAt(occurrence.globalPos),
@@ -97,14 +97,14 @@ function validateTextDocument(textDocument) {
                         message  : brokenRule
                     };
 
-                    diagnostics.push(diagnosic);
+                    diagnostics.push(diagnostic);
                 });
             }
         }
 
         if (result.INVALID_TEMPLATE) {
             const occurrence = result.INVALID_TEMPLATE[0]
-            const diagnosic = {
+            const diagnostic = {
                 severity : vscodeLanguageServer.DiagnosticSeverity.Error,
                 range    : {
                     start : textDocument.positionAt(occurrence.globalPos),
@@ -113,7 +113,7 @@ function validateTextDocument(textDocument) {
                 message  : occurrence.message
             };
 
-            diagnostics.push(diagnosic);
+            diagnostics.push(diagnostic);
         }
 
         connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });

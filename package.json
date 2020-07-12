@@ -25,7 +25,8 @@
 		"vscode": "^1.23.0"
 	},
 	"activationEvents": [
-		"onLanguage:xml"
+		"onLanguage:xml",
+		"onLanguage:isml"
 	],
 	"main": "./client/src/extension",
 	"scripts": {

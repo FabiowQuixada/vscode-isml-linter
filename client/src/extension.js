@@ -31,7 +31,7 @@ function activate(context) {
     };
 
     const clientOptions = {
-        documentSelector: [{ scheme: 'file', language: 'xml' }],
+        documentSelector: [{ scheme: 'file', language: 'xml' }, { scheme: 'file', language: 'isml' }],
         synchronize: {
             fileEvents: vscode.workspace.createFileSystemWatcher('**/.clientrc')
         }

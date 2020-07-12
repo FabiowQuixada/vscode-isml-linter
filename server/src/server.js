@@ -97,7 +97,7 @@ function validateTextDocument(textDocument) {
                                 start : textDocument.positionAt(occurrence.globalPos),
                                 end   : textDocument.positionAt(occurrence.globalPos + occurrence.length)
                             },
-                            message  : brokenRule
+                            message  : occurrence.message
                         };
 
                         diagnostics.push(diagnostic);

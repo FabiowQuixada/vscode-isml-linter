@@ -92,6 +92,89 @@ function getLineBreakChar(string) {
     return LF_LINE_BREAK;
 }
 
+function addErrorOccurrencesToDiagnostics(result, textDocument, templatePath, isCrlfLineBreak, diagnostics) {
+    if (result.errors) {
+        for (const brokenRule in result.errors) {
+
+            result.errors[brokenRule][templatePath].forEach(function (occurrence) {
+
+                let startPos = occurrence.globalPos;
+
+                if (isCrlfLineBreak) {
+                    startPos += occurrence.lineNumber - 1;
+                    const lineBreakQty = (occurrence.line.match(new RegExp('\n', 'g')) || []).length;
+
+                    occurrence.length += lineBreakQty;
+                }
+
+                const diagnostic = {
+                    severity : vscodeLanguageServer.DiagnosticSeverity.Error,
+                    range    : {
+                        start : textDocument.positionAt(startPos),
+                        end   : textDocument.positionAt(startPos + occurrence.length)
+                    },
+                    message  : occurrence.message
+                };
+
+                diagnostics.push(diagnostic);
+            });
+        }
+    }
+}
+
+function addWarningOccurrencesToDiagnostics(result, textDocument, templatePath, isCrlfLineBreak, diagnostics) {
+    if (result.warnings) {
+        for (const brokenRule in result.warnings) {
+
+            result.warnings[brokenRule][templatePath].forEach(function (occurrence) {
+
+                let startPos = occurrence.globalPos;
+
+                if (isCrlfLineBreak) {
+                    startPos += occurrence.lineNumber - 1;
+                    const lineBreakQty = (occurrence.line.match(new RegExp('\n', 'g')) || []).length;
+
+                    occurrence.length += lineBreakQty;
+                }
+
+                const diagnostic = {
+                    severity : vscodeLanguageServer.DiagnosticSeverity.Warning,
+                    range    : {
+                        start : textDocument.positionAt(startPos),
+                        end   : textDocument.positionAt(startPos + occurrence.length)
+                    },
+                    message  : occurrence.message
+                };
+
+                diagnostics.push(diagnostic);
+            });
+        }
+    }
+}
+
+function addInvalidTemplateOccurrenceToDiagnostis(result, textDocument, isCrlfLineBreak, diagnostics) {
+    if (result.INVALID_TEMPLATE.length) {
+        const occurrence = result.INVALID_TEMPLATE[0];
+
+        let startPos = occurrence.globalPos;
+
+        if (isCrlfLineBreak) {
+            startPos += occurrence.lineNumber - 1;
+        }
+
+        const diagnostic = {
+            severity: vscodeLanguageServer.DiagnosticSeverity.Error,
+            range: {
+                start: textDocument.positionAt(startPos),
+                end: textDocument.positionAt(startPos + occurrence.length)
+            },
+            message: occurrence.message
+        };
+
+        diagnostics.push(diagnostic);
+    }
+}
+
 function validateTextDocument(textDocument) {
     return __awaiter(this, void 0, void 0, function* () {
 
@@ -111,44 +194,10 @@ function validateTextDocument(textDocument) {
             const isCrlfLineBreak = getLineBreakChar(documentContent) === CRLF_LINE_BREAK;
             const result          = IsmlLinter.parse(templatePath, documentContent);
 
-            if (result.errors) {
-                for (const brokenRule in result.errors) {
+            addErrorOccurrencesToDiagnostics(result, textDocument, templatePath, isCrlfLineBreak, diagnostics);
+            addWarningOccurrencesToDiagnostics(result, textDocument, templatePath, isCrlfLineBreak, diagnostics);
 
-                    result.errors[brokenRule][templatePath].forEach( function(occurrence) {
-
-                        let startPos = occurrence.globalPos;
-
-                        if (isCrlfLineBreak) {
-                            startPos += occurrence.lineNumber - 1;
-                        }
-
-                        const diagnostic = {
-                            severity : vscodeLanguageServer.DiagnosticSeverity.Error,
-                            range    : {
-                                start : textDocument.positionAt(startPos),
-                                end   : textDocument.positionAt(startPos + occurrence.length)
-                            },
-                            message  : occurrence.message
-                        };
-
-                        diagnostics.push(diagnostic);
-                    });
-                }
-            }
-
-            if (result.INVALID_TEMPLATE.length) {
-                const occurrence = result.INVALID_TEMPLATE[0]
-                const diagnostic = {
-                    severity : vscodeLanguageServer.DiagnosticSeverity.Error,
-                    range    : {
-                        start : textDocument.positionAt(occurrence.globalPos),
-                        end   : textDocument.positionAt(occurrence.globalPos + occurrence.length)
-                    },
-                    message  : occurrence.message
-                };
-
-                diagnostics.push(diagnostic);
-            }
+            addInvalidTemplateOccurrenceToDiagnostis(result, textDocument, isCrlfLineBreak, diagnostics);
 
         } catch (error) {
             // TODO Log error in a better way and stop throwing the error to the user;
@@ -160,7 +209,7 @@ function validateTextDocument(textDocument) {
                     start : textDocument.positionAt(0),
                     end   : textDocument.positionAt(1)
                 },
-                message  : error.stack
+                message  : error.isCustom ? error.message : error.stack
             };
 
             diagnostics.push(diagnostic);
@@ -174,7 +223,7 @@ function getEslintConfigPath(projectRootDir) {
     const eslintConfigFileNameList = ['.eslintrc.json', '.eslintrc.js', '.eslintrc'];
 
     for (let i = 0; i < eslintConfigFileNameList.length; i++) {
-        const configFileName = configFileNameList[i];
+        const configFileName = eslintConfigFileNameList[i];
         const configFilePath = projectRootDir + '/' + configFileName;
 
         try {
@@ -228,6 +277,7 @@ function getIsmlConfig(templatePath) {
 
             return config;
         } catch (error) {
+            console.log('An error has occurred: ' + error + error.stack)
             // TODO
         }
     }

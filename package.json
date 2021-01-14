@@ -4,7 +4,7 @@
 	"description": "Integrates Isml-Linter into VS Code.",
 	"author": "Fabiow Quixadá",
 	"license": "MIT",
-	"version": "1.0.2",
+	"version": "1.1.0",
 	"icon": "images/logo.png",
 	"repository": {
 		"type": "git",
@@ -19,7 +19,9 @@
 		"linter",
 		"demandware",
 		"salesforce",
-		"digital-script"
+		"digital-script",
+		"sfra",
+		"site-genesis"
 	],
 	"engines": {
 		"vscode": "^1.23.0"
@@ -37,5 +39,6 @@
 	"devDependencies": {},
 	"dependencies": {
 		"eslint": "^7.7.0",
+		"isml-linter": "latest"
 	}
 }

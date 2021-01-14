@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.0] - 2021-01-XX
+
+### Added
+ - Tree rules compatibility;
+ - Warning level occurrences;
+
+### Fixed
+ - Some minor issues;
+ 
 ## [1.0.1] - 2020-07-12
 
 ### Fixed
@@ -33,6 +42,7 @@
 ### Added
 - Publish extension (Beta Version)
 
+[1.1.0]: https://github.com/FabiowQuixada/vscode-isml-linter/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/FabiowQuixada/vscode-isml-linter/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/FabiowQuixada/vscode-isml-linter/compare/v0.0.3...v1.0.0
 [0.0.3]: https://github.com/FabiowQuixada/vscode-isml-linter/compare/0.0.2...v0.0.3

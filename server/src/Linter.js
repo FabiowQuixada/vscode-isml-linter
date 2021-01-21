@@ -54,23 +54,20 @@ function getIsmlConfig(templatePath) {
         if (fs.existsSync(configFilePath)) {
 
             console.log('Loading isml config file: ' + configFilePath);
-            const config = require(configFilePath);
+            const config              = require(configFilePath);
+            const isEslintRuleEnabled = config.rules && 'eslint-to-isscript' in config.rules;
 
             delete config.ignore;
             delete config.enableCache;
             delete config.ignoreUnparseable;
 
-            // TODO: Only if Eslint rule is enabled;
-            if (!config.eslintConfig) {
+            if (isEslintRuleEnabled && !config.eslintConfig) {
                 const eslintConfigPath = getEslintConfigPath(projectRootDir);
 
                 if (eslintConfigPath) {
                     config.eslintConfig = eslintConfigPath;
                 }
             }
-
-            console.log('Enabled rules:');
-            console.log(JSON.stringify(config.rules, null, 4));
 
             return config;
         }

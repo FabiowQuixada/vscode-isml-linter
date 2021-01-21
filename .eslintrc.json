@@ -1,18 +1,15 @@
 {
     "plugins": [
-        "jasmine",
         "varspacing"
     ],
     "env": {
         "browser": true,
         "es6": true,
-        "node": true,
-        "jasmine": true
+        "node": true
     },
     "extends": [
         "eslint:recommended",
-        "plugin:varspacing/recommended",
-        "plugin:jasmine/recommended"
+        "plugin:varspacing/recommended"
     ],
     "parserOptions": {
         "ecmaVersion": 2018,

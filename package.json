@@ -39,6 +39,7 @@
 	"devDependencies": {},
 	"dependencies": {
 		"eslint": "^7.7.0",
+		"eslint-plugin-varspacing": "^1.2.2",
 		"isml-linter": "latest"
 	}
 }

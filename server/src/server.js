@@ -81,8 +81,7 @@ function validateTextDocument(textDocument) {
             diagnostics.push(...lintResult);
 
         } catch (error) {
-            // TODO Log error in a better way and stop throwing the error to the user;
-            console.log(error);
+            console.log('An error has occurred: ' + error + ' ' + error.stack);
 
             const diagnostic = {
                 severity : vscodeLanguageServer.DiagnosticSeverity.Error,

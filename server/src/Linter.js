@@ -1,4 +1,5 @@
 const IsmlLinter = require('isml-linter');
+const fs         = require('fs');
 
 const CRLF_LINE_BREAK = '\r\n';
 const LF_LINE_BREAK   = '\n';
@@ -25,15 +26,13 @@ function getEslintConfigPath(projectRootDir) {
         const configFileName = eslintConfigFileNameList[i];
         const configFilePath = projectRootDir + '/' + configFileName;
 
-        try {
-            console.log('trying to load eslint config: ' + projectRootDir + '/' + configFilePath);
-            require(configFilePath);
-
+        if (fs.existsSync(configFilePath)) {
+            console.log('Loading eslint config file: ' + configFilePath);
             return configFilePath;
-        } catch (error) {
-            // TODO
         }
     }
+
+    console.log('No eslint config file found.');
 
     return null;
 }
@@ -44,25 +43,24 @@ function getIsmlConfig(templatePath) {
     const projectRootDir     = cartridgeDir.split('\\').join('/');
     const configFileNameList = ['ismllinter.config.js', '.ismllinter.json', '.ismllintrc.js'];
 
-    console.log('template path: ' + templatePath);
-    console.log('cartridge dir: ' + cartridgeDir);
-    console.log('project root dir: ' + projectRootDir);
+    console.log('Template path: '          + templatePath);
+    console.log('Cartridge directory: '    + cartridgeDir);
+    console.log('Project root directory: ' + projectRootDir);
 
     for (let i = 0; i < configFileNameList.length; i++) {
         const configFileName = configFileNameList[i];
         const configFilePath = projectRootDir + '/' + configFileName;
 
-        try {
-            console.log('trying to load isml config: ' + configFilePath);
+        if (fs.existsSync(configFilePath)) {
+
+            console.log('Loading isml config file: ' + configFilePath);
             const config = require(configFilePath);
 
             delete config.ignore;
             delete config.enableCache;
             delete config.ignoreUnparseable;
 
-            console.log('Using: ' + configFilePath);
-            console.log('eslint config: ' + config.eslintConfig);
-
+            // TODO: Only if Eslint rule is enabled;
             if (!config.eslintConfig) {
                 const eslintConfigPath = getEslintConfigPath(projectRootDir);
 
@@ -71,13 +69,10 @@ function getIsmlConfig(templatePath) {
                 }
             }
 
+            console.log('Enabled rules:');
             console.log(JSON.stringify(config.rules, null, 4));
 
-
             return config;
-        } catch (error) {
-            console.log('An error has occurred: ' + error + error.stack);
-            // TODO
         }
     }
 
@@ -154,7 +149,7 @@ function run(textDocument, templatePath, severityLevels) {
 
     const documentContent = textDocument.getText();
     const isCrlfLineBreak = getLineBreakChar(documentContent) === CRLF_LINE_BREAK;
-    const result          = IsmlLinter.parse(templatePath, documentContent);
+    const lintResult      = IsmlLinter.parse(templatePath, documentContent);
 
     const documentData = {
         textDocument,
@@ -162,9 +157,9 @@ function run(textDocument, templatePath, severityLevels) {
         isCrlfLineBreak
     };
 
-    const errorList   = getOccurrenceList(result.errors, documentData, severityLevels.ERROR);
-    const warningList = getOccurrenceList(result.warnings, documentData, severityLevels.WARNING);
-    const invalidList = getInvalidTemplateOccurrence(result.INVALID_TEMPLATE, documentData, severityLevels.ERROR);
+    const errorList   = getOccurrenceList(lintResult.errors, documentData, severityLevels.ERROR);
+    const warningList = getOccurrenceList(lintResult.warnings, documentData, severityLevels.WARNING);
+    const invalidList = getInvalidTemplateOccurrence(lintResult.INVALID_TEMPLATE, documentData, severityLevels.ERROR);
 
     const diagnostics = errorList.concat(warningList, invalidList);
 

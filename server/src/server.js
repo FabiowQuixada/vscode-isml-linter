@@ -71,7 +71,12 @@ function validateTextDocument(textDocument) {
         try {
             const templatePath = URI.default.parse(textDocument.uri).fsPath;
 
-            const lintResult = Linter.run(textDocument, templatePath, vscodeLanguageServer);
+            const severityLevels = {
+                ERROR   : vscodeLanguageServer.DiagnosticSeverity.Error,
+                WARNING : vscodeLanguageServer.DiagnosticSeverity.Warning
+            };
+
+            const lintResult = Linter.run(textDocument, templatePath, severityLevels);
 
             diagnostics.push(...lintResult);
 

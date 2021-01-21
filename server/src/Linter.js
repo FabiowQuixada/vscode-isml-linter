@@ -86,15 +86,17 @@ function getIsmlConfig(templatePath) {
     return null;
 }
 
-function addErrorOccurrencesToDiagnostics(result, textDocument, templatePath, isCrlfLineBreak, diagnostics, severity) {
-    if (result.errors) {
-        for (const brokenRule in result.errors) {
+function getOccurrenceList(occurrenceList, documentData, severity) {
+    const diagnostics = [];
 
-            result.errors[brokenRule][templatePath].forEach(function (occurrence) {
+    if (occurrenceList) {
+        for (const brokenRule in occurrenceList) {
+
+            occurrenceList[brokenRule][documentData.templatePath].forEach(function (occurrence) {
 
                 let startPos = occurrence.globalPos;
 
-                if (isCrlfLineBreak) {
+                if (documentData.isCrlfLineBreak) {
                     startPos           += occurrence.lineNumber - 1;
                     const lineBreakQty = (occurrence.line.match(new RegExp(LF_LINE_BREAK, 'g')) || []).length;
 
@@ -104,8 +106,8 @@ function addErrorOccurrencesToDiagnostics(result, textDocument, templatePath, is
                 const diagnostic = {
                     severity : severity,
                     range    : {
-                        start : textDocument.positionAt(startPos),
-                        end   : textDocument.positionAt(startPos + occurrence.length)
+                        start : documentData.textDocument.positionAt(startPos),
+                        end   : documentData.textDocument.positionAt(startPos + occurrence.length)
                     },
                     message  : occurrence.message
                 };
@@ -114,62 +116,38 @@ function addErrorOccurrencesToDiagnostics(result, textDocument, templatePath, is
             });
         }
     }
+
+    return diagnostics;
 }
 
-function addWarningOccurrencesToDiagnostics(result, textDocument, templatePath, isCrlfLineBreak, diagnostics, severity) {
-    if (result.warnings) {
-        for (const brokenRule in result.warnings) {
+function getInvalidTemplateOccurrence(occurrenceList, documentData, severity) {
+    const diagnostics = [];
 
-            result.warnings[brokenRule][templatePath].forEach(function (occurrence) {
-
-                let startPos = occurrence.globalPos;
-
-                if (isCrlfLineBreak) {
-                    startPos           += occurrence.lineNumber - 1;
-                    const lineBreakQty = (occurrence.line.match(new RegExp(LF_LINE_BREAK, 'g')) || []).length;
-
-                    occurrence.length += lineBreakQty;
-                }
-
-                const diagnostic = {
-                    severity : severity,
-                    range    : {
-                        start : textDocument.positionAt(startPos),
-                        end   : textDocument.positionAt(startPos + occurrence.length)
-                    },
-                    message  : occurrence.message
-                };
-
-                diagnostics.push(diagnostic);
-            });
-        }
-    }
-}
-
-function addInvalidTemplateOccurrenceToDiagnostis(result, textDocument, isCrlfLineBreak, diagnostics, severity) {
-    if (result.INVALID_TEMPLATE.length) {
-        const occurrence = result.INVALID_TEMPLATE[0];
+    if (occurrenceList.length > 0) {
+        const occurrence = occurrenceList[0];
 
         let startPos = occurrence.globalPos;
 
-        if (isCrlfLineBreak) {
+        if (documentData.isCrlfLineBreak) {
             startPos += occurrence.lineNumber - 1;
         }
 
         const diagnostic = {
-            severity: severity,
-            range: {
-                start: textDocument.positionAt(startPos),
-                end: textDocument.positionAt(startPos + occurrence.length)
+            severity : severity,
+            range    : {
+                start : documentData.textDocument.positionAt(startPos),
+                end   : documentData.textDocument.positionAt(startPos + occurrence.length)
             },
-            message: occurrence.message
+            message  : occurrence.message
         };
 
         diagnostics.push(diagnostic);
     }
+
+    return diagnostics;
 }
 
-function run(textDocument, templatePath, vscodeLanguageServer) {
+function run(textDocument, templatePath, severityLevels) {
     const projectIsmlConfig = getIsmlConfig(templatePath);
 
     IsmlLinter.setConfig(projectIsmlConfig);
@@ -177,14 +155,18 @@ function run(textDocument, templatePath, vscodeLanguageServer) {
     const documentContent = textDocument.getText();
     const isCrlfLineBreak = getLineBreakChar(documentContent) === CRLF_LINE_BREAK;
     const result          = IsmlLinter.parse(templatePath, documentContent);
-    const diagnostics     = [];
 
-    const errorSeverity   = vscodeLanguageServer.DiagnosticSeverity.Error;
-    const warningSeverity = vscodeLanguageServer.DiagnosticSeverity.Warning;
+    const documentData = {
+        textDocument,
+        templatePath,
+        isCrlfLineBreak
+    };
 
-    addErrorOccurrencesToDiagnostics(        result, textDocument, templatePath, isCrlfLineBreak, diagnostics, errorSeverity);
-    addWarningOccurrencesToDiagnostics(      result, textDocument, templatePath, isCrlfLineBreak, diagnostics, warningSeverity);
-    addInvalidTemplateOccurrenceToDiagnostis(result, textDocument, isCrlfLineBreak, diagnostics, errorSeverity);
+    const errorList   = getOccurrenceList(result.errors, documentData, severityLevels.ERROR);
+    const warningList = getOccurrenceList(result.warnings, documentData, severityLevels.WARNING);
+    const invalidList = getInvalidTemplateOccurrence(result.INVALID_TEMPLATE, documentData, severityLevels.ERROR);
+
+    const diagnostics = errorList.concat(warningList, invalidList);
 
     return diagnostics;
 }

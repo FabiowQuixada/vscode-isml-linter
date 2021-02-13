@@ -3,47 +3,31 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  * ------------------------------------------------------------------------------------------ */
 
-'use strict';
+const Linter               = require('./Linter');
+const vscodeLanguageServer = require('vscode-languageserver');
+const URI                  = require('vscode-uri');
 
-const IsmlLinter = require('isml-linter');
-const path = require('path');
-const vscodeLanguageServer = require("vscode-languageserver");
-const URI = require('vscode-uri');
-
-const connection = vscodeLanguageServer.createConnection(vscodeLanguageServer.ProposedFeatures.all);
-const documents = new vscodeLanguageServer.TextDocuments();
-const defaultSettings = { maxNumberOfProblems: 1000 };
-const globalSettings = defaultSettings;
-const documentSettings = new Map();
+const connection               = vscodeLanguageServer.createConnection(vscodeLanguageServer.ProposedFeatures.all);
+const documents                = new vscodeLanguageServer.TextDocuments();
+const documentSettings         = new Map();
 let hasConfigurationCapability = false;
-let hasWorkspaceFolderCapability = false;
-let hasDiagnosticRelatedInformationCapability = false;
 
-const CRLF_LINE_BREAK = '\r\n';
-const LF_LINE_BREAK   = '\n';
-const CR_LINE_BREAK   = '\r';
-
-const __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+const __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator['throw'](value)); } catch (e) { reject(e); } }
         function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
 
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, '__esModule', { value: true });
 
 connection.onInitialize( params => {
 
     const capabilities = params.capabilities;
 
     hasConfigurationCapability = capabilities.workspace && !!capabilities.workspace.configuration;
-    hasWorkspaceFolderCapability = capabilities.workspace && !!capabilities.workspace.workspaceFolders;
-    hasDiagnosticRelatedInformationCapability =
-        capabilities.textDocument &&
-        capabilities.textDocument.publishDiagnostics &&
-        capabilities.textDocument.publishDiagnostics.relatedInformation;
 
     return {
         capabilities: {
@@ -58,13 +42,10 @@ connection.onInitialized( () => {
     }
 });
 
-connection.onDidChangeConfiguration( change => {
+connection.onDidChangeConfiguration( () => {
 
     if (hasConfigurationCapability) {
         documentSettings.clear();
-    }
-    else {
-        globalSettings = ((change.settings.ismlLinter || defaultSettings));
     }
 
     documents.all().forEach(validateTextDocument);
@@ -78,126 +59,21 @@ documents.onDidChangeContent( change => {
     validateTextDocument(change.document);
 });
 
-function getLineBreakChar(string) {
-    const indexOfLF = string.indexOf(LF_LINE_BREAK, 1);
-
-    if (indexOfLF === -1) {
-        if (string.indexOf(CR_LINE_BREAK) !== -1) return CR_LINE_BREAK;
-
-        return LF_LINE_BREAK;
-    }
-
-    if (string[indexOfLF - 1] === CR_LINE_BREAK) return CRLF_LINE_BREAK;
-
-    return LF_LINE_BREAK;
-}
-
-function addErrorOccurrencesToDiagnostics(result, textDocument, templatePath, isCrlfLineBreak, diagnostics) {
-    if (result.errors) {
-        for (const brokenRule in result.errors) {
-
-            result.errors[brokenRule][templatePath].forEach(function (occurrence) {
-
-                let startPos = occurrence.globalPos;
-
-                if (isCrlfLineBreak) {
-                    startPos += occurrence.lineNumber - 1;
-                    const lineBreakQty = (occurrence.line.match(new RegExp('\n', 'g')) || []).length;
-
-                    occurrence.length += lineBreakQty;
-                }
-
-                const diagnostic = {
-                    severity : vscodeLanguageServer.DiagnosticSeverity.Error,
-                    range    : {
-                        start : textDocument.positionAt(startPos),
-                        end   : textDocument.positionAt(startPos + occurrence.length)
-                    },
-                    message  : occurrence.message
-                };
-
-                diagnostics.push(diagnostic);
-            });
-        }
-    }
-}
-
-function addWarningOccurrencesToDiagnostics(result, textDocument, templatePath, isCrlfLineBreak, diagnostics) {
-    if (result.warnings) {
-        for (const brokenRule in result.warnings) {
-
-            result.warnings[brokenRule][templatePath].forEach(function (occurrence) {
-
-                let startPos = occurrence.globalPos;
-
-                if (isCrlfLineBreak) {
-                    startPos += occurrence.lineNumber - 1;
-                    const lineBreakQty = (occurrence.line.match(new RegExp('\n', 'g')) || []).length;
-
-                    occurrence.length += lineBreakQty;
-                }
-
-                const diagnostic = {
-                    severity : vscodeLanguageServer.DiagnosticSeverity.Warning,
-                    range    : {
-                        start : textDocument.positionAt(startPos),
-                        end   : textDocument.positionAt(startPos + occurrence.length)
-                    },
-                    message  : occurrence.message
-                };
-
-                diagnostics.push(diagnostic);
-            });
-        }
-    }
-}
-
-function addInvalidTemplateOccurrenceToDiagnostis(result, textDocument, isCrlfLineBreak, diagnostics) {
-    if (result.INVALID_TEMPLATE.length) {
-        const occurrence = result.INVALID_TEMPLATE[0];
-
-        let startPos = occurrence.globalPos;
-
-        if (isCrlfLineBreak) {
-            startPos += occurrence.lineNumber - 1;
-        }
-
-        const diagnostic = {
-            severity: vscodeLanguageServer.DiagnosticSeverity.Error,
-            range: {
-                start: textDocument.positionAt(startPos),
-                end: textDocument.positionAt(startPos + occurrence.length)
-            },
-            message: occurrence.message
-        };
-
-        diagnostics.push(diagnostic);
-    }
-}
-
 function validateTextDocument(textDocument) {
     return __awaiter(this, void 0, void 0, function* () {
 
         if (!textDocument.uri.endsWith('.isml')) {
-            return;
+            yield;
         }
 
         const diagnostics = [];
 
         try {
-            const templatePath      = URI.default.parse(textDocument.uri).fsPath;
-            const projectIsmlConfig = getIsmlConfig(templatePath);
+            const templatePath = URI.default.parse(textDocument.uri).fsPath;
 
-            IsmlLinter.setConfig(projectIsmlConfig);
+            const lintResult = Linter.run(textDocument, templatePath, vscodeLanguageServer);
 
-            const documentContent = textDocument.getText();
-            const isCrlfLineBreak = getLineBreakChar(documentContent) === CRLF_LINE_BREAK;
-            const result          = IsmlLinter.parse(templatePath, documentContent);
-
-            addErrorOccurrencesToDiagnostics(result, textDocument, templatePath, isCrlfLineBreak, diagnostics);
-            addWarningOccurrencesToDiagnostics(result, textDocument, templatePath, isCrlfLineBreak, diagnostics);
-
-            addInvalidTemplateOccurrenceToDiagnostis(result, textDocument, isCrlfLineBreak, diagnostics);
+            diagnostics.push(...lintResult);
 
         } catch (error) {
             // TODO Log error in a better way and stop throwing the error to the user;
@@ -217,74 +93,6 @@ function validateTextDocument(textDocument) {
 
         connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
     });
-}
-
-function getEslintConfigPath(projectRootDir) {
-    const eslintConfigFileNameList = ['.eslintrc.json', '.eslintrc.js', '.eslintrc'];
-
-    for (let i = 0; i < eslintConfigFileNameList.length; i++) {
-        const configFileName = eslintConfigFileNameList[i];
-        const configFilePath = projectRootDir + '/' + configFileName;
-
-        try {
-            console.log('trying to load eslint config: ' + projectRootDir + '/' + configFilePath)
-            require(configFilePath);
-
-            return configFilePath;
-        } catch (error) {
-            // TODO
-        }
-    }
-
-    return null;
-}
-
-function getIsmlConfig(templatePath) {
-    const cartridgeDir       = templatePath.substring(0, templatePath.indexOf('\\cartridges\\'))
-        || templatePath.substring(0, templatePath.indexOf('\\spec\\'));
-    const projectRootDir     = cartridgeDir.split('\\').join('/');
-    const configFileNameList = ['ismllinter.config.js', '.ismllinter.json', '.ismllintrc.js'];
-
-    console.log('template path: ' + templatePath);
-    console.log('cartridge dir: ' + cartridgeDir)
-    console.log('project root dir: ' + projectRootDir)
-
-    for (let i = 0; i < configFileNameList.length; i++) {
-        const configFileName = configFileNameList[i];
-        var configFilePath = projectRootDir + '/' + configFileName;
-
-        try {
-            console.log('trying to load isml config: ' + configFilePath)
-            const config = require(configFilePath);
-
-            delete config.ignore;
-            delete config.enableCache;
-            delete config.ignoreUnparseable;
-
-            console.log('Using: ' + configFilePath);
-            console.log('eslint config: ' + config.eslintConfig);
-
-            if (!config.eslintConfig) {
-                const eslintConfigPath = getEslintConfigPath(projectRootDir);
-
-                if (eslintConfigPath) {
-                    config.eslintConfig = eslintConfigPath;
-                }
-            }
-
-            console.log(JSON.stringify(config.rules, null, 4));
-
-
-            return config;
-        } catch (error) {
-            console.log('An error has occurred: ' + error + error.stack)
-            // TODO
-        }
-    }
-
-    console.log('no isml-linter config file found.')
-
-    return null;
 }
 
 documents.listen(connection);

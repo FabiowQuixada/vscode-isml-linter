@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.1.2] - 2021-02-14
+
+### Fixed
+ - Eslint configuration;
+ - Rule exception handling;
+
+### Changed
+ - Added "Disable Prophet Occurrences" Section to README;
+ - Set stable Isml Linter version in package.json;
+
 ## [1.1.1] - 2021-01-18
 
 ### Changed
@@ -47,6 +57,7 @@
 ### Added
 - Publish extension (Beta Version)
 
+[1.1.2]: https://github.com/FabiowQuixada/vscode-isml-linter/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/FabiowQuixada/vscode-isml-linter/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/FabiowQuixada/vscode-isml-linter/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/FabiowQuixada/vscode-isml-linter/compare/v1.0.0...v1.0.1

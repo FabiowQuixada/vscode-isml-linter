@@ -83,29 +83,39 @@ function getOccurrenceList(occurrenceList, documentData, severity) {
 
     if (occurrenceList) {
         for (const brokenRule in occurrenceList) {
+            try {
+                occurrenceList[brokenRule][documentData.templatePath].forEach(function (occurrence) {
 
-            occurrenceList[brokenRule][documentData.templatePath].forEach(function (occurrence) {
+                    let startPos = occurrence.globalPos;
 
-                let startPos = occurrence.globalPos;
+                    if (documentData.isCrlfLineBreak) {
+                        startPos           += occurrence.lineNumber - 1;
+                        const lineBreakQty = (occurrence.line.match(new RegExp(LF_LINE_BREAK, 'g')) || []).length;
 
-                if (documentData.isCrlfLineBreak) {
-                    startPos           += occurrence.lineNumber - 1;
-                    const lineBreakQty = (occurrence.line.match(new RegExp(LF_LINE_BREAK, 'g')) || []).length;
+                        occurrence.length += lineBreakQty;
+                    }
 
-                    occurrence.length += lineBreakQty;
-                }
+                    const diagnostic = {
+                        severity : severity,
+                        range    : {
+                            start : documentData.textDocument.positionAt(startPos),
+                            end   : documentData.textDocument.positionAt(startPos + occurrence.length)
+                        },
+                        message  : occurrence.message
+                    };
 
-                const diagnostic = {
-                    severity : severity,
+                    diagnostics.push(diagnostic);
+                });
+            } catch (e) {
+                diagnostics.push({
+                    severity : vscodeLanguageServer.DiagnosticSeverity.Error,
                     range    : {
-                        start : documentData.textDocument.positionAt(startPos),
-                        end   : documentData.textDocument.positionAt(startPos + occurrence.length)
+                        start : textDocument.positionAt(0),
+                        end   : textDocument.positionAt(1)
                     },
-                    message  : occurrence.message
-                };
-
-                diagnostics.push(diagnostic);
-            });
+                    message  : `An error has occurred while checking '${brokenRule}' rule: ${e.stack}`
+                });
+            }
         }
     }
 

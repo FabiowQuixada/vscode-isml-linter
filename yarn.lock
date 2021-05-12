@@ -157,10 +157,18 @@ chalk@^4.0.0:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
-cli-progress@^3.8.2:
-  version "3.8.2"
-  resolved "https://registry.yarnpkg.com/cli-progress/-/cli-progress-3.8.2.tgz#abaf1fc6d6401351f16f068117a410554a0eb8c7"
-  integrity sha512-qRwBxLldMSfxB+YGFgNRaj5vyyHe1yMpVeDL79c+7puGujdKJHQHydgqXDcrkvQgJ5U/d3lpf6vffSoVVUftVQ==
+chalk@^4.1.0:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/chalk/-/chalk-4.1.1.tgz#c80b3fab28bf6371e6863325eee67e618b77e6ad"
+  integrity sha512-diHzdDKxcU+bAsUboHLPEDQiw0qEe0qd7SYUn3HgcFlWgbDcfLGswOHYeGrHKzG9z6UYf01d9VFMfZxPM1xZSg==
+  dependencies:
+    ansi-styles "^4.1.0"
+    supports-color "^7.1.0"
+
+cli-progress@^3.9.0:
+  version "3.9.0"
+  resolved "https://registry.yarnpkg.com/cli-progress/-/cli-progress-3.9.0.tgz#25db83447deb812e62d05bac1af9aec5387ef3d4"
+  integrity sha512-g7rLWfhAo/7pF+a/STFH/xPyosaL1zgADhI0OM83hl3c7S43iGvJWEAV2QuDOnQ8i6EMBj/u4+NTd0d5L+4JfA==
   dependencies:
     colors "^1.1.2"
     string-width "^4.2.0"
@@ -494,15 +502,15 @@ isexe@^2.0.0:
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=
 
-isml-linter@latest:
-  version "5.30.2"
-  resolved "https://registry.yarnpkg.com/isml-linter/-/isml-linter-5.30.2.tgz#bd3892415384af0c53e1fa1816580d6f4a83182e"
-  integrity sha512-QxAZolJ92k/KI7IzlGIafIP1wmzOZgh642mwdCz2qJSYjmfc/2OWAnHwwEm6/yKY575BBaefNvHEYJO9GPiGGg==
+isml-linter@^5.30.2:
+  version "5.35.1"
+  resolved "https://registry.yarnpkg.com/isml-linter/-/isml-linter-5.35.1.tgz#6b115895386536d67763b269e128157873bd3f98"
+  integrity sha512-OBaZcD+ud37hW7QZ0gUBc+twTG4E5I1sLCdC5a/Vl+5EuS7JLamdh04TSzcd+D6CzJ4OB7tvf5X354pPOxblEg==
   dependencies:
     app-root-path "^3.0.0"
-    chalk "^4.0.0"
-    cli-progress "^3.8.2"
-    readdir "^1.0.1"
+    chalk "^4.1.0"
+    cli-progress "^3.9.0"
+    readdir "^1.0.2"
 
 js-tokens@^4.0.0:
   version "4.0.0"
@@ -541,9 +549,9 @@ levn@^0.4.1:
     type-check "~0.4.0"
 
 lodash@^4.17.20:
-  version "4.17.20"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
-  integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
+  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
 
 lru-cache@^6.0.0:
   version "6.0.0"
@@ -620,7 +628,7 @@ punycode@^2.1.0:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
-readdir@^1.0.1:
+readdir@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/readdir/-/readdir-1.0.2.tgz#770ed83f2369767163d653376ac106141c54e38c"
   integrity sha512-/fOSAvuHNv3IyE1/GXuz7o0d+EIwe35a0Qd/yXWs48KKas0TnxhzHVmExFmMRsWgozaCWBQ81kNyXB7uD+iYow==

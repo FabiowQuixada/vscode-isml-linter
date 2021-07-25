@@ -33,6 +33,9 @@
 	"main": "./client/src/extension",
 	"scripts": {
 		"lint": "./node_modules/.bin/eslint . --fix",
+		"pack:ext": "vsce package",
+		"install:ext": "code --install-extension ./vscode-isml-linter-1.1.3.vsix",
+		"upgrade:linter": "cd ../isml-linter/ && npm pack && cd ../vscode-isml-linter/ && npm i ../isml-linter//isml-linter-5.35.9.tgz && yarn pack:ext && yarn install:ext",
 		"vscode:prepublish": "cd client && npm run update-vscode && cd ..",
 		"postinstall": "cd client && npm install && cd ../server && npm install && cd .."
 	},

@@ -37,7 +37,7 @@ function activate(context) {
         }
     };
 
-    client = new vscodeLanguageClient.LanguageClient('isml-linter', 'Isml Linter', serverOptions, clientOptions);
+    client = new vscodeLanguageClient.LanguageClient('isml-linter', 'ISML Linter', serverOptions, clientOptions);
     client.start();
 }
 

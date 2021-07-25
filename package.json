@@ -1,7 +1,7 @@
 {
 	"name": "vscode-isml-linter",
-	"displayName": "Isml Linter",
-	"description": "Integrates Isml-Linter into VS Code.",
+	"displayName": "ISML Linter",
+	"description": "Integrates ISML Linter into VS Code.",
 	"author": "Fabiow Quixadá",
 	"license": "MIT",
 	"version": "1.1.2",

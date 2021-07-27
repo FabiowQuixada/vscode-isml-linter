@@ -76,7 +76,7 @@ function validateTextDocument(textDocument) {
                 WARNING : vscodeLanguageServer.DiagnosticSeverity.Warning
             };
 
-            const lintResult = Linter.run(textDocument, templatePath, severityLevels);
+            const lintResult = Linter.run(textDocument, templatePath, severityLevels, vscodeLanguageServer);
 
             diagnostics.push(...lintResult);
 

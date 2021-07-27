@@ -77,7 +77,7 @@ function getIsmlConfig(templatePath) {
     return null;
 }
 
-function getOccurrenceList(occurrenceList, documentData, severity) {
+function getOccurrenceList(occurrenceList, documentData, severity, textDocument, vscodeLanguageServer) {
     const diagnostics = [];
 
     if (occurrenceList) {
@@ -148,7 +148,7 @@ function getInvalidTemplateOccurrence(occurrenceList, documentData, severity) {
     return diagnostics;
 }
 
-function run(textDocument, templatePath, severityLevels) {
+function run(textDocument, templatePath, severityLevels, vscodeLanguageServer) {
     const projectIsmlConfig = getIsmlConfig(templatePath);
 
     IsmlLinter.setConfig(projectIsmlConfig);
@@ -163,8 +163,8 @@ function run(textDocument, templatePath, severityLevels) {
         isCrlfLineBreak
     };
 
-    const errorList   = getOccurrenceList(lintResult.errors, documentData, severityLevels.ERROR);
-    const warningList = getOccurrenceList(lintResult.warnings, documentData, severityLevels.WARNING);
+    const errorList   = getOccurrenceList(lintResult.errors, documentData, severityLevels.ERROR, textDocument, vscodeLanguageServer);
+    const warningList = getOccurrenceList(lintResult.warnings, documentData, severityLevels.WARNING, textDocument, vscodeLanguageServer);
     const invalidList = getInvalidTemplateOccurrence(lintResult.INVALID_TEMPLATE, documentData, severityLevels.ERROR);
 
     const diagnostics = errorList.concat(warningList, invalidList);

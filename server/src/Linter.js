@@ -58,7 +58,6 @@ function getIsmlConfig(templatePath) {
             const isEslintRuleEnabled = config.rules && 'eslint-to-isscript' in config.rules;
 
             delete config.ignore;
-            delete config.enableCache;
             delete config.ignoreUnparseable;
 
             if (isEslintRuleEnabled && !config.eslintConfig) {

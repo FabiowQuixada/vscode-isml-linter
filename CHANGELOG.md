@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.3] - 2021-07-27
+
+### Changed
+ - Extension name from "Isml Linter" to "ISML Linter";
+ - Upgraded ISML Linter version;
+
+### Security
+ - Upgraded dependencies;
+
 ## [1.1.2] - 2021-02-14
 
 ### Fixed
@@ -57,6 +66,7 @@
 ### Added
 - Publish extension (Beta Version)
 
+[1.1.3]: https://github.com/FabiowQuixada/vscode-isml-linter/compare/v1.1.2...v1.1.3
 [1.1.2]: https://github.com/FabiowQuixada/vscode-isml-linter/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/FabiowQuixada/vscode-isml-linter/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/FabiowQuixada/vscode-isml-linter/compare/v1.0.1...v1.1.0

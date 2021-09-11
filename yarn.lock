@@ -497,10 +497,10 @@
   "resolved" "https://registry.npmjs.org/isexe/-/isexe-2.0.0.tgz"
   "version" "2.0.0"
 
-"isml-linter@^5.36.4":
-  "integrity" "sha512-sAGSwqR4skZxJ+mBWf64IJnoQd5MrJ1Bd+1n6ID6aBt7Fbst0+l7tNOz3oxnU9f7g3ph1r+bctEqbvywutVUnw=="
-  "resolved" "https://registry.npmjs.org/isml-linter/-/isml-linter-5.36.4.tgz"
-  "version" "5.36.4"
+"isml-linter@^5.38.4":
+  "integrity" "sha512-Ey8Q0rfy5rCrFrEavu9fgOwA6D5GEAOkx0+1p5AZehn4YMqiARXiwRH45LjjiNXJADNnrKd2szq6+to7eh0IWA=="
+  "resolved" "https://registry.npmjs.org/isml-linter/-/isml-linter-5.38.4.tgz"
+  "version" "5.38.4"
   dependencies:
     "app-root-path" "^3.0.0"
     "chalk" "^4.1.0"

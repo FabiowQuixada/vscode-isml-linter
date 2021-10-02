@@ -4,7 +4,7 @@
 	"description": "Integrates ISML Linter into VS Code.",
 	"author": "Fabiow Quixadá",
 	"license": "MIT",
-	"version": "1.1.7",
+	"version": "1.1.8",
 	"icon": "images/logo.png",
 	"repository": {
 		"type": "git",

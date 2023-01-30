@@ -91,7 +91,9 @@ function getOccurrenceList(occurrenceList, documentData, severity, textDocument,
                         startPos           += occurrence.lineNumber - 1;
                         const lineBreakQty = (occurrence.line.match(new RegExp(LF_LINE_BREAK, 'g')) || []).length;
 
-                        occurrence.length += lineBreakQty;
+                        if (occurrence.length > 1) {
+                            occurrence.length += lineBreakQty;
+                        }
                     }
 
                     const diagnostic = {

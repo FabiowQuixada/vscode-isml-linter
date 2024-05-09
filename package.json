@@ -4,7 +4,7 @@
 	"description": "Integrates ISML Linter into VS Code.",
 	"author": "Fabiow Quixadá",
 	"license": "MIT",
-	"version": "1.1.8",
+	"version": "1.1.11",
 	"icon": "images/logo.png",
 	"repository": {
 		"type": "git",
@@ -34,7 +34,7 @@
 	"scripts": {
 		"lint": "./node_modules/.bin/eslint . --fix",
 		"pack:ext": "vsce package",
-		"install:ext": "code --install-extension ./vscode-isml-linter-1.1.6.vsix",
+		"install:ext": "code --install-extension ./vscode-isml-linter-1.1.11.vsix",
 		"upgrade:linter": "cd ../isml-linter/ && npm pack && cd ../vscode-isml-linter/ && npm i ../isml-linter//isml-linter-5.36.4.tgz && yarn pack:ext && yarn install:ext",
 		"vscode:prepublish": "cd client && npm run update-vscode && cd ..",
 		"up:linter": "git stash -u && npm i isml-linter@latest && git add . && git commit -m \"Upgrade ISML Linter\"",

@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.1.11] - 2024-05-09
+
+### Changed
+ - Upgraded ISML Linter to version 5.43.9;
+ 
 ## [1.1.8] - 2021-10-02
 
 ### Changed
@@ -91,6 +96,7 @@
 ### Added
 - Publish extension (Beta Version)
 
+[1.1.11]: https://github.com/FabiowQuixada/vscode-isml-linter/compare/v1.1.8...v1.1.11
 [1.1.8]: https://github.com/FabiowQuixada/vscode-isml-linter/compare/v1.1.7...v1.1.8
 [1.1.7]: https://github.com/FabiowQuixada/vscode-isml-linter/compare/v1.1.6...v1.1.7
 [1.1.6]: https://github.com/FabiowQuixada/vscode-isml-linter/compare/v1.1.5...v1.1.6

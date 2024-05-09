@@ -508,10 +508,10 @@ isexe@^2.0.0:
   resolved "https://registry.npmjs.org/isexe/-/isexe-2.0.0.tgz"
   integrity sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=
 
-isml-linter@^5.39.3:
-  version "5.39.3"
-  resolved "https://registry.npmjs.org/isml-linter/-/isml-linter-5.39.3.tgz"
-  integrity sha512-F8MXRYDe+uvhdMkeg4q2nnCG9iAj0qMfCpIhmoqQcs0c7QfoR9mtaofKhPtv0fEneVaRzsWI9JiB9ha2nAgNVg==
+isml-linter@^5.43.9:
+  version "5.43.9"
+  resolved "https://registry.yarnpkg.com/isml-linter/-/isml-linter-5.43.9.tgz#4c975dfd3f9536bbdda38c7c0f5eaef7d3320a0d"
+  integrity sha512-+I7G2s37DOiomxgc6Q6ySD6TJjzjCm3FJdUyO/xCmmeDM0g0UzgHRIaDZ/G9OtFD5/4xApvVxVWeTs36XnA3QQ==
   dependencies:
     app-root-path "^3.0.0"
     chalk "^4.1.0"

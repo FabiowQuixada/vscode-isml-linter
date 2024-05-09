@@ -43,6 +43,6 @@
 	"dependencies": {
 		"eslint": "^7.7.0",
 		"eslint-plugin-varspacing": "^1.2.2",
-		"isml-linter": "^5.39.3"
+		"isml-linter": "^5.43.9"
 	}
 }

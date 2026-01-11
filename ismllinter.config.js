@@ -18,13 +18,13 @@ const config = {
         'max-lines'           : {},
 
         // // Tree rules;
-        // 'indent'               : {},
+        'indent'               : {},
         // 'leading-iscontent'    : {},
         // 'max-depth'            : {},
         // 'no-embedded-isml'     : {},
         // 'no-hardcode'          : {},
         // 'no-require-in-loop'   : {},
-        // 'one-element-per-line' : {},
+        'one-element-per-line' : {},
         // 'leading-iscache'      : {},
         // 'no-deprecated-attrs'  : {},
         // 'contextual-attrs'     : {},

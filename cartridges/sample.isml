@@ -1,6 +1,7 @@
 <isset name="showQuickView" value="${true}" scope="page" />
-<isset name="product" value="${pdict.product}" scope="page" />
-<div class="product product-wrapper" data-pid="${product.id}">
+<isset name="product" value="${pdict.product}" scope="page" /><div class="product product-wrapper" data-pid="${product.id}">
      <isinclude
       template="product/productTile" />
 </div>
+
+<script>var quickViewEnabled = ${showQuickView};</script>
